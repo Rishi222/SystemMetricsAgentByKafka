@@ -3,11 +3,6 @@ const { Kafka } = require("kafkajs");
 const si = require("systeminformation");
 
 async function runProducer() {
-  // const kafka = new Kafka({
-  //   clientId: process.env.CLIENT_ID_PRODUCER || "system-agent",
-  //   brokers: (process.env.BROKERS || "localhost:9092").split(","),
-  // });
-
   const kafka = new Kafka({
     clientId: process.env.CLIENT_ID_PRODUCER || "system-agent",
     brokers: (process.env.BROKERS || "localhost:9092").split(","),
