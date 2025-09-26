@@ -1,2 +1,20 @@
 # SystemMetricsAgentByKafka
 Build a system metrics agent with kafka for real time system dashboard viewer.
+
+
+## Prerequisites
+- Java 8 or higher
+- Maven
+- Kafka server
+- Zookeeper server  
+
+## Updates on code Date : 2024-06-20
+
+- update the server from localhost to 0.0.0.0 which help me to connect the server from other machine.
+- clear the code at producer or consumer side.
+- connect system A to system B using IP address of system B.
+- now the kafka server is running on system B and system A is sending the data to system B kafka server.
+- connect the folder to git hub.
+
+## Problem
+-- problem the ip change if new ip assigned to system B then system A is not able to connect to system B kafka server.
