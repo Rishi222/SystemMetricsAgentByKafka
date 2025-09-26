@@ -15,6 +15,9 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - connect system A to system B using IP address of system B.
 - now the kafka server is running on system B and system A is sending the data to system B kafka server.
 - connect the folder to git hub.
+- add the readme file.
+- clear the code which is not required.
+- remove the unwanted code from producer and consumer file.
 
 ## Problem
 -- problem the ip change if new ip assigned to system B then system A is not able to connect to system B kafka server.

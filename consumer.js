@@ -34,13 +34,10 @@ const run = async () => {
         safePrint("💻 OS Info", data.osinfo);
         safePrint("⚡ CPU", data.cpu);
         safePrint("🧠 Memory", data.memory);
-        // safePrint("💾 Memory Layout", data.memLayout);
-        // safePrint("💽 Disk Layout", data.diskLayout);
         safePrint("🌐 Network Interfaces", data.networkInterfaces);
         safePrint("📡 Network Stats", data.networkStats);
         safePrint("🔋 Battery", data.battery);
         safePrint("🔧 Services", data.services);
-        // safePrint("🎮 Graphics", data.graphics);
         safePrint("👤 Users", data.users);
         console.log("---------------------------------------------------\n");
       } catch (err) {
