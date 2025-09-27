@@ -9,7 +9,7 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - Kafka server
 - Zookeeper server  
 
-## Updates on code Date : 2024-06-20
+## Updates on code Date : 2024-06-26
 
 - update the server from localhost to 0.0.0.0 which help me to connect the server from other machine.
 - clear the code at producer or consumer side.
@@ -23,3 +23,10 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 ## Problem
 
 -- problem the ip change if new ip assigned to system B then system A is not able to connect to system B kafka server.
+
+## Update on code Date : 2024-06-27
+
+- start a new branch for Testing purpose.
+- add the new file for testing purpose.
+- use grafana/k6 for testing purpose.
+- to see switch to Testing branch.
