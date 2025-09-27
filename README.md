@@ -1,8 +1,9 @@
 # SystemMetricsAgentByKafka
+
 Build a system metrics agent with kafka for real time system dashboard viewer.
 
-
 ## Prerequisites
+
 - Java 8 or higher
 - Maven
 - Kafka server
@@ -20,4 +21,5 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - remove the unwanted code from producer and consumer file.
 
 ## Problem
+
 -- problem the ip change if new ip assigned to system B then system A is not able to connect to system B kafka server.
