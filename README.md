@@ -43,6 +43,15 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - seprate the connection string of mongo db in config folder.
 - seprate the connection string of kafka in config folder.
 - now the data is store in mongo db and also send to kafka server. consumer is now clear.
+- create a new branch for Server implementation. name is ServerBranch.
+- create a docker file to run the kafka or zookeeper in docker container.
+- run mongo db in local via brew.
+- change the broker ip to localhost because now all the service is running in local system.
+
+## Problem 02
+
+-- when ever router shutdown it will chnage the ip address so the system A is not able to connect to system B kafka server.
+-- solution use the localhost or domain name instead of ip address.
 
 ## next idea implementation Date : 2025-09-28
 
