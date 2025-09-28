@@ -36,7 +36,6 @@ function getSystemData() {
 app.get("/send-data", async (req, res) => {
   try {
     const data = getSystemData();
-
     // Send to Kafka
     await producer.send({
       topic: "system-data",
