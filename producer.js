@@ -1,15 +1,8 @@
 require("dotenv").config();          
-const { Kafka } = require("kafkajs");
+const kafka = require("./config/kafka");
 const si = require("systeminformation");
 
 async function runProducer() {
-  const kafka = new Kafka({
-    clientId: process.env.CLIENT_ID_PRODUCER || "system-agent",
-    brokers: (process.env.BROKERS || "localhost:9092").split(","),
-    connectionTimeout: 3000,
-    requestTimeout: 25000,
-  });
-
   const producer = kafka.producer();
   await producer.connect();
   console.log("✅ Producer connected to Kafka");
