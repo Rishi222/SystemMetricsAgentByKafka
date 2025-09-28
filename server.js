@@ -1,7 +1,7 @@
 // api.js
 const express = require("express");
 const os = require("os");
-const { kafka } = require("./config/kafka.js");
+const kafka = require("./config/kafka");
 
 const app = express();
 app.use(express.json());
@@ -38,7 +38,7 @@ app.get("/send-data", async (req, res) => {
     const data = getSystemData();
     // Send to Kafka
     await producer.send({
-      topic: "system-data",
+      topic: "MonitoringSelf",
       messages: [{ value: JSON.stringify(data) }],
     });
 
