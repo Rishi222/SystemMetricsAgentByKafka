@@ -1,32 +1,37 @@
-const { Kafka } = require("kafkajs");
+require("dotenv").config();
+const connectDB = require("./config/db");
+const kafka = require("./config/kafka");
+const SystemData = require("./models/SystemData");
 
-const kafka = new Kafka({
-  clientId: process.env.CLIENT_ID_CONSUMER || "system-monitor-consumer",
-  brokers: (process.env.BROKERS || "localhost:9092").split(","),
-});
+// Connect MongoDB
+connectDB();
 
-const consumer = kafka.consumer({
-  groupId: process.env.CONSUMER_GROUP || "defined-monitor-group",
-});
+// Create a kafka consumer instance
+const consumer = kafka.consumer({ groupId: process.env.CONSUMER_GROUP || "defined-monitor-group" });
 
+// Function to run the consumer
 const run = async () => {
-  await consumer.connect();
-  await consumer.subscribe({
+  await consumer.connect();       // here first connect the consumer with the kafka server
+  await consumer.subscribe({      
     topic: process.env.TOPIC || "MonitoringSelf",
     fromBeginning: true,
   });
 
+  // Log that the consumer is running
   console.log("✅ Consumer running...");
 
+  // Process each message received
   await consumer.run({
     eachMessage: async ({ message }) => {
       try {
         const data = JSON.parse(message.value.toString());
 
-        const safePrint = (label, value) =>
+        const safePrint = (label, value) =>               // safe print function is use to print the data in the console if data is not available it print N/A
           console.log(`${label}:`, value ?? "N/A");
 
-        console.log("\n---------------------------------------------------");
+        // console.log("\n---------------------------------------------------");
+        console.log(`📥 Saved/Updated data for host: ${data.hostname}`);
+
         safePrint("📡 Hostname", data.hostname);
         safePrint("🕒 Timestamp", data.timestamp);
 
@@ -39,12 +44,22 @@ const run = async () => {
         safePrint("🔋 Battery", data.battery);
         safePrint("🔧 Services", data.services);
         safePrint("👤 Users", data.users);
-        console.log("---------------------------------------------------\n");
-      } catch (err) {
+
+        // console.log("---------------------------------------------------\n");
+
+        // Save or update system data by hostname
+        await SystemData.findOneAndUpdate(
+          { hostname: data.hostname },
+          { $set: data },
+          { upsert: true, new: true }
+        );
+      } catch (err) {         // here the error is handle if any error occur in parsing the message
         console.error("❌ Error parsing message", err);
       }
     },
   });
 };
 
-run().catch(console.error);
+run().catch(console.error);                     // here the run producer function is call to start the producer
+
+// NOTE : Update at 2025-09-28

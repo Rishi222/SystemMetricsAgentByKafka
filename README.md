@@ -9,7 +9,7 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - Kafka server
 - Zookeeper server  
 
-## Updates on code Date : 2024-06-26
+## Updates on code Date : 2025-09-26
 
 - update the server from localhost to 0.0.0.0 which help me to connect the server from other machine.
 - clear the code at producer or consumer side.
@@ -20,18 +20,32 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - clear the code which is not required.
 - remove the unwanted code from producer and consumer file.
 
-## Problem
+## Problem 01
 
 -- problem the ip change if new ip assigned to system B then system A is not able to connect to system B kafka server.
+-- solution use the domain name instead of ip address.
 
-## Update on code Date : 2024-06-27
+## Solved the problem 01 Date : 2025-09-27
+
+## Update on code Date : 2025-09-27
 
 - start a new branch for Testing purpose.
 - add the new file for testing purpose.
 - use grafana/k6 for testing purpose.
 - to see switch to Testing branch.
 
+## Update on code Date : 2025-09-28
+
+- add some changes in producer file where now i use mongo db to store the data.
+- create a new schema for mongo db to store the data. name is SystemData.js
+- now the data is store in mongo db and also send to kafka server.
+- implementing the mongo db in producer file to create a multi purpose data handling from parents or child relation.
+- seprate the connection string of mongo db in config folder.
+- seprate the connection string of kafka in config folder.
+- now the data is store in mongo db and also send to kafka server. consumer is now clear.
+
 ## Git Hub Branch
--main 
+
+-main
 -Testing
 -MongoBranch
