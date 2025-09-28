@@ -4,44 +4,52 @@ const systemDataSchema = new mongoose.Schema(
   {
     hostname: { type: String, unique: true, required: true },
     timestamp: String,
+
     system: {
-      manufacturer: String,
-      model: String,
-      version: String,
-      type: String,
+      manufacturer: { type: String },
+      model: { type: String },
+      version: { type: String },
+      type: { type: String },
     },
+
     osinfo: {
-      platform: String,
-      distro: String,
-      codename: String,
+      platform: { type: String },
+      distro: { type: String },
+      codename: { type: String },
     },
+
     cpu: {
-      manufacturer: String,
-      brand: String,
-      cores: Number,
+      manufacturer: { type: String },
+      brand: { type: String },
+      cores: { type: Number },
     },
+
     memory: {
-      total: Number,
-      free: Number,
-      used: Number,
+      total: { type: Number },
+      free: { type: Number },
+      used: { type: Number },
     },
+
     networkInterfaces: [
       {
-        mac: String,
-        ip4: String,
+        mac: { type: String },
+        ip4: { type: String },
       },
     ],
+
     networkStats: [
       {
-        iface: String,
+        iface: { type: String },
       },
     ],
+
     battery: {
-      isCharging: Boolean,
-      percent: Number,
+      isCharging: { type: Boolean , default:null },
+      percent: { type: Number , default:null },
     },
-    services: [{ name: String }],
-    users: [{ user: String }],
+
+    services: [{ name: { type: String } }],
+    users: [{ user: { type: String } }],
   },
   { timestamps: true }
 );
