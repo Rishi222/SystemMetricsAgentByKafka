@@ -30,3 +30,10 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - add the new file for testing purpose.
 - use grafana/k6 for testing purpose.
 - to see switch to Testing branch.
+
+## Update on code Date : 2024-06-28     
+
+- add some changes in producer file where now i use mongo db to store the data.
+- create a new schema for mongo db to store the data.
+- now the data is store in mongo db and also send to kafka server.
+- implementing the mongo db in producer file to create a multi purpose data handling from parents or child relation.
