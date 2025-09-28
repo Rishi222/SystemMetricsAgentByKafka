@@ -1,14 +1,29 @@
+require("dotenv").config();
 const { Kafka } = require("kafkajs");
+const mongoose = require("mongoose");
+const SystemData = require("./models/SystemData");
 
+// MongoDB connection
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+// Kafka consumer setup
 const kafka = new Kafka({
   clientId: process.env.CLIENT_ID_CONSUMER || "system-monitor-consumer",
   brokers: (process.env.BROKERS || "localhost:9092").split(","),
 });
 
+// Create a kafka consumer instance
 const consumer = kafka.consumer({
   groupId: process.env.CONSUMER_GROUP || "defined-monitor-group",
 });
 
+// Function to run the consumer
 const run = async () => {
   await consumer.connect();
   await consumer.subscribe({
@@ -16,8 +31,10 @@ const run = async () => {
     fromBeginning: true,
   });
 
+  // Log that the consumer is running
   console.log("✅ Consumer running...");
 
+  // Process each message received
   await consumer.run({
     eachMessage: async ({ message }) => {
       try {
@@ -47,4 +64,7 @@ const run = async () => {
   });
 };
 
-run().catch(console.error);
+run().catch(console.error);                     // here the run producer function is call to start the producer
+
+// NOTE : Update at 2025-09-28
+

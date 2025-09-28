@@ -14,7 +14,7 @@ async function runProducer() {
   await producer.connect();
   console.log("✅ Producer connected to Kafka");
 
-  const safeCall = async (fn) => {
+  const safeCall = async (fn) => {        // here the safe call function is use to handle the error if any error occur it return null
     try {
       return await fn();
     } catch {
@@ -22,7 +22,7 @@ async function runProducer() {
     }
   };
 
-  async function collectData() {
+  async function collectData() {          // here the collect data function is use to collect the data from the systeminformation module
     const osInfo = await safeCall(si.osInfo);
     const system = await safeCall(si.system);
     const cpu = await safeCall(si.cpu);
@@ -34,7 +34,7 @@ async function runProducer() {
     const servicesList = ["ai_service", "docker", "nginx"];                             // define important services
     const services = await safeCall(() => si.services(servicesList.join(",")));
 
-    return {
+    return {          // here return the data in the form of object
       timestamp: new Date().toISOString(),
       hostname: osInfo?.hostname || "unknown",
       system: {
@@ -76,7 +76,7 @@ async function runProducer() {
     };
   }
 
-  setInterval(async () => {
+  setInterval(async () => {             // here the set interval is use to send the data to kafka server every 3 seconds
     const data = await collectData();
 
     await producer.send({
@@ -88,5 +88,7 @@ async function runProducer() {
   }, 3000);
 }
 
-runProducer().catch(console.error);
+runProducer().catch(console.error);         // here the run producer function is call to start the producer
                         
+
+// NOTE : Update at 2025-09-28
