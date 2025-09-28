@@ -44,8 +44,34 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - seprate the connection string of kafka in config folder.
 - now the data is store in mongo db and also send to kafka server. consumer is now clear.
 
+## next idea implementation Date : 2025-09-28
+
+- create a new server using express js to show the data in web page.
+- create a new branch for server implementation. name is ServerBranch.
+
+## View
+
+            Device (mobile, TV, tablet)
+                        |
+                        | HTTP / WebSocket / REST
+                        v
+            Bridge Server (Node.js / Python / etc.)
+                        |
+                        | Kafka Producer
+                        v
+            Kafka Broker (System 1)
+                        |
+                        | Kafka Consumer
+                        v
+            Kafka Consumer (System 2)
+                        |
+                        | Store in Database (MongoDB, PostgreSQL, etc.)
+                        v
+            Database (MongoDB, PostgreSQL, etc.)
+
 ## Git Hub Branch
 
 -main
 -Testing
--MongoBranch (now remove this branch because all the code is merge to the main branch).
+-MongoBranch : the work of this branch is to add mongo db support (now remove this branch because all the code is merge to the main branch)
+-ServerBranch : the work of this branch is to add server support which help to connect the service through web services
