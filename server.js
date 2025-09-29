@@ -1,9 +1,9 @@
 const express = require("express");
-const os = require("os");
 const kafka = require("./config/kafka");
+const getSystemData = require("./utils/getSystemData");
 
 const app = express();
-app.use(express.json());
+app.use(express.json());        // thse express json middleware is use to parse the json data
 
 // Create Kafka producer
 const producer = kafka.producer();
@@ -15,42 +15,35 @@ async function connectProducer() {
 
 connectProducer();
 
-// Helper function to collect system data
-function getSystemData() {
-  return {
-    hostname: os.hostname(),
-    platform: os.platform(),
-    arch: os.arch(),
-    uptime: os.uptime(),
-    cpus: os.cpus().map((cpu) => cpu.model),
-    memory: {
-      total: os.totalmem(),
-      free: os.freemem(),
-    },
-    timestamp: new Date().toISOString(),
-  };
-}
-
-// API route → GET system data & send to Kafka
-app.get("/send-data", async (req, res) => {
+// here the server will receive data from external clients
+app.post("/send-data", async (req, res) => {
   try {
-    console.log(req);
-    const data = getSystemData();
-    // console.log(data);
+    console.log("📩 Raw data from client:", req.body);
+
+    // Validate (basic check)
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "No data provided" });
+    }
+
+    // Apply schema
+    const SystemData = getSystemData(req.body);
+
     // Send to Kafka
     await producer.send({
       topic: "MonitoringSelf",
-      messages: [{ value: JSON.stringify(data) }],
+      messages: [{ value: JSON.stringify(SystemData) }],
     });
+
+    console.log("✅ Structured system data sent:", SystemData);
 
     res.json({
       status: "success",
-      message: "System data sent to Kafka",
-      data,
+      message: "Child data sent to Kafka",
+      received: SystemData,
     });
   } catch (error) {
-    console.error("❌ Error sending to Kafka:", error);
-    res.status(500).json({ error: "Failed to send data" });
+    console.error("❌ Error processing child data:", error);
+    res.status(500).json({ error: "Failed to process child data" });
   }
 });
 
