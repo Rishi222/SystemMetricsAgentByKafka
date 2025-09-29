@@ -78,6 +78,26 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
                         v
             Database (MongoDB, PostgreSQL, etc.)
 
+## Update on code Date : 2025-09-29
+
+-Update the docker compose file to run the kafka , zookeeper and mongodb in docker container. this is also a light weight container. Or remove the mongodb space so for development purpose i can use it in local system.
+
+- test the producer and consumer file via docker just need to change the .env file and run the docker container.
+
+## Problem 03
+
+-- problem is the kafka server not running properly with in docker container. But when i create a topic in kafka server via :
+
+## Solution 03
+
+-- CMD 1 : docker exec -it kafka /bin/bash
+-- CMD 2 : cd /opt/bitnami/kafka
+-- CMD 3 : bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic MonitoringSelf
+
+## Problem 04
+
+-- the data is send to by the server but i want to receive the data from another system or server.
+
 ## Git Hub Branch
 
 -main

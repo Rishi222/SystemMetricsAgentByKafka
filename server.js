@@ -1,4 +1,3 @@
-// api.js
 const express = require("express");
 const os = require("os");
 const kafka = require("./config/kafka");
@@ -35,7 +34,9 @@ function getSystemData() {
 // API route → GET system data & send to Kafka
 app.get("/send-data", async (req, res) => {
   try {
+    console.log(req);
     const data = getSystemData();
+    // console.log(data);
     // Send to Kafka
     await producer.send({
       topic: "MonitoringSelf",
@@ -56,3 +57,6 @@ app.get("/send-data", async (req, res) => {
 app.listen(3000, () => {
   console.log("🚀 API running on http://localhost:3000");
 });
+
+
+// change the server logic to send the data consumer not to receive the consumer's data.
