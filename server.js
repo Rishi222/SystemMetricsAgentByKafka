@@ -1,6 +1,7 @@
 const express = require("express");
 const kafka = require("./config/kafka");
 const getSystemData = require("./utils/getSystemData");
+const ipFinder = require("./utils/ipfinder");
 
 const app = express();
 app.use(express.json());        // thse express json middleware is use to parse the json data
@@ -47,9 +48,18 @@ app.post("/send-data", async (req, res) => {
   }
 });
 
+app.post("/ipinfo", async (req, res) => {
+  try {
+    const ipInfo = await ipFinder();
+    res.json(ipInfo);
+  } catch (error) {
+    console.error("❌ Error fetching IP info:", error);
+    res.status(500).json({ error: "Failed to fetch IP info" });
+  }
+});
+
+// Start the server
+
 app.listen(3000, () => {
   console.log("🚀 API running on http://localhost:3000");
 });
-
-
-// change the server logic to send the data consumer not to receive the consumer's data.
