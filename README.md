@@ -115,6 +115,8 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - update the server.js file to use the ipfinder.js file to get the ip info of system.
 - now the server.js file have two api one is /send-data or other is /ipinfo.
 - the code is test and working fine. test the code via postman.
+- now the server is running on PORT via .env file.
+- create a new branch for login and register or forget functionality. name is LoginBranch.
 
 ## Git Hub Branch
 
@@ -123,3 +125,4 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 -MongoBranch : the work of this branch is to add mongo db support (now remove this branch because all the code is merge to the main branch)
 -ServerBranch : the work of this branch is to add server support which help to connect the service through web services
 -IPfinderBranch : the work of this branch is to find the public ip address of system using third party api and store them to mongo db + the consumer info who logged in or work as a consumer in site
+-LoginBranch : the work of this branch is to add the login and register etc functionality using jwt token and bcrypt for password hashing. this branch is use to build the authentication system. via SQL database.
