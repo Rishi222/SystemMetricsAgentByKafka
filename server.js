@@ -48,7 +48,7 @@ app.post("/send-data", async (req, res) => {
   }
 });
 
-app.post("/ipinfo", async (req, res) => {
+app.get("/ipinfo", async (req, res) => {
   try {
     const ipInfo = await ipFinder();
     res.json(ipInfo);
