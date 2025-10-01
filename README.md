@@ -69,6 +69,12 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
                         v
             Database (MongoDB, PostgreSQL, etc.)
 
+## Update on code Date : 2025-10-01
+
+- add the ip finder api to find the public ip address of system.
+- create a new branch for ip finder api implementation. name is IPfinderBranch.
+- now the public ip address is store in mongo db.
+
 ## Git Hub Branch
 
 -main
