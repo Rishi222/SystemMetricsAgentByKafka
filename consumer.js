@@ -29,7 +29,7 @@ const run = async () => {
         const safePrint = (label, value) =>               // safe print function is use to print the data in the console if data is not available it print N/A
           console.log(`${label}:`, value ?? "N/A");
 
-        // console.log("\n---------------------------------------------------");
+        console.log("\n---------------------------------------------------");
         console.log(`📥 Saved/Updated data for host: ${data.hostname}`);
 
         safePrint("📡 Hostname", data.hostname);
@@ -45,7 +45,7 @@ const run = async () => {
         safePrint("🔧 Services", data.services);
         safePrint("👤 Users", data.users);
 
-        // console.log("---------------------------------------------------\n");
+        console.log("---------------------------------------------------\n");
 
         // Save or update system data by hostname
         await SystemData.findOneAndUpdate(
