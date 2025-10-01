@@ -2,6 +2,7 @@ const express = require("express");
 const kafka = require("./config/kafka");
 const getSystemData = require("./utils/getSystemData");
 const ipFinder = require("./utils/ipfinder");
+require("dotenv").config();        // it is use to load the env file
 
 const app = express();
 app.use(express.json());        // thse express json middleware is use to parse the json data
@@ -59,7 +60,6 @@ app.get("/ipinfo", async (req, res) => {
 });
 
 // Start the server
-
-app.listen(3000, () => {
-  console.log("🚀 API running on http://localhost:3000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`🚀 API running on http://localhost:${process.env.PORT || 3000}`);
 });
