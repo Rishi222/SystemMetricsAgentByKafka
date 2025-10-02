@@ -1,21 +1,62 @@
+require("dotenv").config(); // it is use to load the env file
 const express = require("express");
 const kafka = require("./config/kafka");
 const getSystemData = require("./utils/getSystemData");
-const ipFinder = require("./utils/ipfinder");
-require("dotenv").config();        // it is use to load the env file
+const ipFinder = require("./utils/ipfinder"); // import the ipFinder function
+
+// new dependencies for authentication
+const helmet = require("helmet");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const rateLimiter = require("./middlewares/rateLimiter");
+const authRoutes = require("./routes/auth");
+// const dataRoutes = require("./routes/data");
+const sequelize = require("./config/mysqldb");
+// const User = require("./models/User");
 
 const app = express();
-app.use(express.json());        // thse express json middleware is use to parse the json data
+
+app.use(helmet());
+app.use(express.json()); // thse express json middleware is use to parse the json data
+app.use(express.urlencoded({ extended: true })); // this middleware is use to parse the urlencoded data
+
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.APP_URL,
+    credentials: true
+  })
+);
+app.use(rateLimiter);
 
 // Create Kafka producer
 const producer = kafka.producer();
 
 async function connectProducer() {
-  await producer.connect();
-  console.log("✅ Kafka Producer connected");
+  try {
+    await producer.connect();
+    console.log("✅ Kafka Producer connected");
+  } catch (error) {
+    console.error("❌ Error connecting Kafka Producer:", error);
+  }
 }
 
 connectProducer();
+
+async function start() {                      // here this function is use to connect the MySQL database
+  try {
+    await sequelize.authenticate();
+    console.log("✅ MySQL Database connected");
+    // Sync - in production prefer migrations
+    await sequelize.sync({ alter: true }); // or { force: false }
+  } catch (err) {
+    console.error("❌ Error connecting MySQL Server:", err);
+    process.exit(1);
+  }
+}
+
+// Health check
+app.get("/", (req, res) => res.json({ good : true }));
 
 // here the server will receive data from external clients
 app.post("/send-data", async (req, res) => {
@@ -59,7 +100,13 @@ app.get("/ipinfo", async (req, res) => {
   }
 });
 
+// Routes
+app.use("/api/auth", authRoutes);
+// app.use("/api/v1/data", dataRoutes);
+
 // Start the server
 app.listen(process.env.PORT || 3000, () => {
   console.log(`🚀 API running on http://localhost:${process.env.PORT || 3000}`);
 });
+
+start();              // here the start function is call to connect the MySQL database

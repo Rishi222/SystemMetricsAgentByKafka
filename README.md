@@ -118,11 +118,62 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - now the server is running on PORT via .env file.
 - create a new branch for login and register or forget functionality. name is LoginBranch.
 
+## Update on code Date : 2025-10-02
+
+- working on LoginBranch to route the user to login and register or forget password functionality.
+- here i use MVC framework to structure the code.
+- update the diagram for better understanding. using the eraser.io tool.
+- add a new thing which is dependency for better understanding of code and each dependencies.
+- add MySQL database to store the user info. or authentication related info.
+- use sequelize ORM to connect with MySQL database.
+- use bcrypt for password hashing.
+- use jwt token for authentication purpose.
+- use express-validator for validation purpose.
+- use nodemailer for sending email to user for forget password functionality.
+- use helmet for secure http headers.
+- use cors for cross origin resource sharing.
+- use express-rate-limit for rate limiting to prevent brute force attack.
+- use crypto for generating secure random token for forget password functionality.
+- create a new folder name controllers to handle the logic of login , register and forget password functionality.
+- create a new folder name models to handle the database models or schema.
+- create a new folder name routes to handle the routes of login , register and forget password functionality.
+- create a new file name authController.js in controllers folder to handle the logic of login , register and forget password functionality.
+- create a new file name User.js in models folder to handle the database models or schema.
+- create a new file name authRoutes.js in routes folder to handle the routes of login , register and forget password functionality.
+- create a new file name db.js in config folder to handle the database connection.
+- update the server.js file to use the routes and connect with database.
+- create a new file name .env to store the environment variables.
+
+## Update on code Date : 2025-10-03
+
+- the signup,login or logout functionality is working fine.
+- still want to check the forget password functionality because i use the gmail smtp server to send the email to user. so need to check it properly.
+
+
 ## Git Hub Branch
 
--main
--Testing
--MongoBranch : the work of this branch is to add mongo db support (now remove this branch because all the code is merge to the main branch)
--ServerBranch : the work of this branch is to add server support which help to connect the service through web services
--IPfinderBranch : the work of this branch is to find the public ip address of system using third party api and store them to mongo db + the consumer info who logged in or work as a consumer in site
--LoginBranch : the work of this branch is to add the login and register etc functionality using jwt token and bcrypt for password hashing. this branch is use to build the authentication system. via SQL database.
+- main
+- Testing
+- MongoBranch : the work of this branch is to add mongo db support (now remove this branch because all the code is merge to the main branch)
+- ServerBranch : the work of this branch is to add server support which help to connect the service through web services
+- IPfinderBranch : the work of this branch is to find the public ip address of system using third party api and store them to mongo db + the consumer info who logged in or work as a consumer in site
+- LoginBranch : the work of this branch is to add the login and register etc functionality using jwt token and bcrypt for password hashing. this branch is use to build the authentication system. via SQL database.
+
+## Dependencies
+
+- express → Web framework for handling routes, middleware, and HTTP requests.
+- sequelize → ORM for interacting with MySQL using models instead of raw SQL.
+- mysql2 → MySQL client for Sequelize to connect with the database.
+- bcrypt → Secure password hashing and comparison.
+- jsonwebtoken (JWT) → Token-based authentication for secure user sessions.
+- dotenv → Loads environment variables from .env file.
+- cookie-parser → Parses and manages cookies (used for storing auth tokens).
+- express-validator → Middleware for validating and sanitizing user input.
+- nodemailer → Sends emails (used for password reset, notifications, etc.).
+- helmet → Adds secure HTTP headers to protect against common attacks.
+- cors → Enables secure cross-origin requests (frontend ↔ backend).
+- express-rate-limit → Protects against brute-force and DDoS attacks by limiting requests.
+- crypto → Node.js built-in module for generating secure random tokens & hashing.
+- kafka → Apache Kafka client for producing and consuming messages.
+- mongoose → ODM for interacting with MongoDB using schemas and models.
+- systeminformation → Retrieves detailed system and hardware information.

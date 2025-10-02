@@ -54,6 +54,25 @@ services:
           memory: 256M
           cpus: "0.25"
 
+  mysql:
+    # image: mariadb:10.6
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: system_metrics_auth_db
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"   # use only 50% of a CPU core
+          memory: 512M   # max 512 MB RAM
+
 # use command "docker-compose up -d" to start the services in detached mode
 
 # use command "docker-compose down" to stop and remove the containers
