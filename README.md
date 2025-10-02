@@ -149,7 +149,6 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - the signup,login or logout functionality is working fine.
 - still want to check the forget password functionality because i use the gmail smtp server to send the email to user. so need to check it properly.
 
-
 ## Git Hub Branch
 
 - main
