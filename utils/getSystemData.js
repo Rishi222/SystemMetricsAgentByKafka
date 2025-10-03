@@ -1,5 +1,3 @@
-// utils/getSystemData.js
-
 function getSystemData(data) {
   return {
     hostname: data.hostname || "unknown",
