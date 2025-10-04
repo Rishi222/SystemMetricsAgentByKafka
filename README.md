@@ -149,6 +149,14 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - the signup,login or logout functionality is working fine.
 - still want to check the forget password functionality because i use the gmail smtp server to send the email to user. so need to check it properly.
 
+## Update on code Date : 2025-10-04
+
+- currently working on the email module or set-up it properly via .env or email.js file.
+- check the email.js file from scratch or check the logic twice now moving to check the working.
+- check the forget or reset-password functionality it work perfect via postman.
+- the thing is you need to generate a 16 digit app password via google to use with gmail.
+- correct all the error from the file authController.js update the docker-compose.yml file.
+
 ## Git Hub Branch
 
 - main

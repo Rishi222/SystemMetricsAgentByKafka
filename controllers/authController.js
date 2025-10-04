@@ -145,7 +145,7 @@ exports.resetPassword = async (req, res) => {                                   
       where: {
         id,
         resetPasswordToken: hashed,
-        resetPasswordExpires: { [User.sequelize.Op.gt]: Date.now() },
+        resetPasswordExpires: { [Op.gt]: Date.now() },
       },
     });
 
