@@ -1,5 +1,5 @@
 require("dotenv").config();          
-const kafka = require("./config/kafka");
+const kafka = require("./middlewares/kafka");
 const si = require("systeminformation");
 
 async function runProducer() {

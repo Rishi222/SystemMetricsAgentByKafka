@@ -1,6 +1,6 @@
 require("dotenv").config(); // it is use to load the env file
 const express = require("express");
-const kafka = require("./config/kafka");
+const kafka = require("./middlewares/kafka");
 const getSystemData = require("./utils/getSystemData");
 const ipFinder = require("./utils/ipfinder"); // import the ipFinder function
 

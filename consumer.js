@@ -1,6 +1,6 @@
 require("dotenv").config();
 const connectDB = require("./config/mongodb");
-const kafka = require("./config/kafka");
+const kafka = require("./middlewares/kafka");
 const SystemData = require("./models/systemData");
 
 // Connect MongoDB
