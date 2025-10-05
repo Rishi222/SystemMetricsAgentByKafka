@@ -48,7 +48,6 @@ export default function SignupPage() {
       // Save user data to localStorage (like in login)
       localStorage.setItem("user", JSON.stringify(newUser));
 
-      
       setMessage("Signup successful!");
       setIsRedirecting(true);
 

@@ -105,27 +105,24 @@ export default function Login() {
             </Button>
 
             {message && (
-                        <Typography
-                          color={
-                            message.includes("successful")
-                              ? "success.main"
-                              : "error.main"
-                          }
-                        >
-                          {message}
-                        </Typography>
-                      )}
+              <Typography
+                color={
+                  message.includes("successful") ? "success.main" : "error.main"
+                }
+              >
+                {message}
+              </Typography>
+            )}
 
-                                {isRedirecting && (
-                                  <Box display="flex" justifyContent="center" mt={1}>
-                                    <CircularProgress size={24} />
-                                    <Typography variant="body2" ml={1}>
-                                      Redirecting...
-                                    </Typography>
-                                  </Box>
-                                )}
+            {isRedirecting && (
+              <Box display="flex" justifyContent="center" mt={1}>
+                <CircularProgress size={24} />
+                <Typography variant="body2" ml={1}>
+                  Redirecting...
+                </Typography>
+              </Box>
+            )}
             {/* {message && <Typography color="success.main">{message}</Typography>} */}
-
           </Box>
         </form>
 
