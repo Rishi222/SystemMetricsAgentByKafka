@@ -165,6 +165,8 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - second additional thing like navbar,notfoundpage,aboutpage created.
 - add logo to the navbar.
 - move to push the current things to git.
+- working on smoothing the login , signup functionaliy.
+- add more pages to it like UnauthorizedPage, inside ./pages/dashboards -> admin , consumer , producer dashboards file.  add a authcheck to the page which help me check the user is currently the right user or not.
 
 ## Git Hub Branch
 
