@@ -9,9 +9,13 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function SignupPage() {
-  const [role, setRole] = useState("");
+  const location = useLocation();
+  const roleFromURL = new URLSearchParams(location.search).get("role") || "producer";
+
+  const [role, setRole] = useState(roleFromURL);
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {

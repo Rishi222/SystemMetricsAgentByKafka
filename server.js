@@ -102,7 +102,7 @@ app.get("/ipinfo", async (req, res) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/v1/data", dataRoutes);
+// app.use("/api/data", dataRoutes);
 
 // Start the server
 app.listen(process.env.PORT || 3000, () => {

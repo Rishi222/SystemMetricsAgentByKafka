@@ -33,7 +33,7 @@ export default function Login() {
         <Box display="flex" gap={2} mt={2}>
           <Typography
             component={Link}
-            to="/signup"
+            to={`/signup?role=${role}`}
             sx={{ textDecoration: "none", color: "primary.main" }}
           >
             Signup

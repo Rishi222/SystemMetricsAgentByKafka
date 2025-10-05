@@ -18,7 +18,7 @@ function App() {
     <>
       <Router>
         {/* Navbar will always show at the top */}
-        <Navbar />
+        {/* <Navbar /> */}
 
         {/* Main page content changes based on route */}
         <Routes>
