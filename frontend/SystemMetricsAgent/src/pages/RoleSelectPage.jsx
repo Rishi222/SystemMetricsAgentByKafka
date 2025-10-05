@@ -1,34 +1,48 @@
 import { useNavigate } from "react-router-dom";
+import { Box, Typography, Button } from "@mui/material";
+import { useState } from "react";
 
 export default function RoleSelectPage() {
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      {/* Title at the top center */}
-      <h1 className="text-3xl font-bold mb-10">Choose Role</h1>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMessage("Login submitted successfully!");
+  };
 
-      {/* Row of buttons */}
-      <div className="flex gap-10">
-        <button
-          onClick={() => navigate("/login?role=producer")}
-          className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
-        >
-          Producer
-        </button>
-        <button
-          onClick={() => navigate("/login?role=consumer")}
-          className="px-8 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition"
-        >
-          Consumer
-        </button>
-        <button
-          onClick={() => navigate("/login?role=admin")}
-          className="px-8 py-3 bg-purple-500 text-white font-semibold rounded-lg shadow-md hover:bg-purple-600 transition"
-        >
-          Admin
-        </button>
-      </div>
-    </div>
+  return (
+    <>
+      <Box display="flex" flexDirection="column" alignItems="center" mt={8}>
+        <Typography variant="h5">Choose Role ?</Typography>
+        <form onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column" gap={2} width={300} mt={2}>
+            <Button
+              onClick={() => navigate("/login?role=producer")}
+              variant="contained"
+            >
+              Producer
+            </Button>
+            <Button
+              onClick={() => navigate("/login?role=consumer")}
+              variant="contained"
+            >
+              Consumer
+            </Button>
+            <Button
+              onClick={() => navigate("/login?role=admin")}
+              variant="contained"
+            >
+              Admin
+            </Button>
+          </Box>
+        </form>
+        {message && 
+          (<Typography variant="body1" color="green" mt={2}>
+            {message}
+          </Typography>
+        )}
+      </Box>
+    </>
   );
 }

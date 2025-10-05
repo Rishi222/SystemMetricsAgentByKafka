@@ -157,6 +157,15 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - the thing is you need to generate a 16 digit app password via google to use with gmail.
 - correct all the error from the file authController.js update the docker-compose.yml file.
 
+## Update on code Date : 2025-10-05
+
+- working on developing frontend inside the LoginBranch.
+- Build the frontend using ReactJS. add material.ui or tailwind CSS to this project make it simple or better.
+- first is to create the frontend for the login,signup,forgetpassword created.
+- second additional thing like navbar,notfoundpage,aboutpage created.
+- add logo to the navbar.
+- move to push the current things to git.
+
 ## Git Hub Branch
 
 - main
