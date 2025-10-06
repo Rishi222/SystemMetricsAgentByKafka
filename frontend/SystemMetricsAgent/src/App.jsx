@@ -9,7 +9,7 @@ import UnauthorizedPage from "./components/UnauthorizedPage";
 // navbar page
 // import Navbar from "./components/Navbar";
 // about page
-import AboutPage from "./pages/AboutPage";
+import AboutPage from "./components/AboutPage";
 // Dashboards
 import ProducerDashboard from "./pages/dashboards/ProducerDashboard";
 import ConsumerDashboard from "./pages/dashboards/ConsumerDashboard";

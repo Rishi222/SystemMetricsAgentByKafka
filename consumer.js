@@ -1,10 +1,11 @@
 require("dotenv").config();
-const connectDB = require("./config/mongodb");
+const connectMongoDB = require("./config/mongodb");
 const kafka = require("./middlewares/kafka");
 const SystemData = require("./models/systemData");
+const ConsumerData = require("./models/consumer");
 
 // Connect MongoDB
-connectDB();
+connectMongoDB();
 
 // Create a kafka consumer instance
 const consumer = kafka.consumer({ groupId: process.env.CONSUMER_GROUP || "defined-monitor-group" });
@@ -18,7 +19,7 @@ const run = async () => {
   });
 
   // Log that the consumer is running
-  console.log("✅ Consumer running...");
+  console.log("✅ Kafka Consumer connected and listening for messages....");
 
   // Process each message received
   await consumer.run({
@@ -30,11 +31,9 @@ const run = async () => {
           console.log(`${label}:`, value ?? "N/A");
 
         console.log("\n---------------------------------------------------");
-        console.log(`📥 Saved/Updated data for host: ${data.hostname}`);
-
+        console.log(`📥 Received data for host: ${data.hostname}`);
         safePrint("📡 Hostname", data.hostname);
         safePrint("🕒 Timestamp", data.timestamp);
-
         safePrint("🖥️ System", data.system);
         safePrint("💻 OS Info", data.osinfo);
         safePrint("⚡ CPU", data.cpu);
@@ -44,7 +43,6 @@ const run = async () => {
         safePrint("🔋 Battery", data.battery);
         safePrint("🔧 Services", data.services);
         safePrint("👤 Users", data.users);
-
         console.log("---------------------------------------------------\n");
 
         // Save or update system data by hostname
@@ -53,6 +51,15 @@ const run = async () => {
           { $set: data },
           { upsert: true, new: true }
         );
+
+        // update or insert in consumerData (keeps latest info while maintaining timestamp)
+        await ConsumerData.updateOne(
+          {hostname : data.hostname},
+          {$set: {producerId: data.producerId || data.hostname, ...data} },
+          {upset :true},
+        );
+
+        console.log(`✅ Data saved successfully for ${data.hostname}`);
       } catch (err) {         // here the error is handle if any error occur in parsing the message
         console.error("❌ Error parsing message", err);
       }
@@ -62,4 +69,4 @@ const run = async () => {
 
 run().catch(console.error);                     // here the run producer function is call to start the producer
 
-// NOTE : Update at 2025-09-28
+// NOTE : Update at 2025-10-06
