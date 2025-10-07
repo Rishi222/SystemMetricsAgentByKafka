@@ -193,6 +193,17 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - this resetPassword.html is connected at authController.js.
 - now working move to working on ResetPasswordPage.jsx to reset working. or the application is now start via.
 - npm run dev -- --host 0.0.0.0 instead of npm run dev .
+- working or /reset-password at backend or frontend both file.
+- resolve the /reset-password bug conflict via tokens.
+- now both the frontend or backend is connected or work with full potential of auth services, the auth service is check via frontend but not the postman. but work good.
+
+## Problem 06 
+
+-- bug in /reset-password when every try to update the password at backend it shows successfully or the frontend redirect to dashboard but the thing is that it does not save the password in the database or not redirect to login screen also.
+
+## Solution 06
+
+-- the main bug found at backend code where the /reset-password is situated when i store the hash token or password in the database.
 
 ## Git Hub Branch
 

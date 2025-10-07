@@ -93,7 +93,7 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column" gap={2} width={300} mt={2}>
             <TextField
-              label="Email or Username"
+              label="Email"
               name="emailOrUsername"
               value={formData.emailOrUsername}
               onChange={handleChange}

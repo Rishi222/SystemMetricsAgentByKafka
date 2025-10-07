@@ -25,17 +25,35 @@ app.set("trust proxy", true);
 // Store connected producers in memory
 const connectedProducers = new Map(); // key: ip, value: data
 
+// here i add the port or host.
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.IP || "0.0.0.0"; 
+
 app.use(helmet());
 app.use(express.json()); // thse express json middleware is use to parse the json data
 app.use(express.urlencoded({ extended: true })); // this middleware is use to parse the urlencoded data
 
 app.use(cookieParser());
+
+// here update the cors for multiple end points
+const allowedOrigins = [process.env.APP_URL, process.env.APP_URL_CONFIG_IP];
 app.use(
   cors({
-    origin: process.env.APP_URL,
-    credentials: true
+    origin: function (origin, callback) {
+      // allow requests with no origin (like mobile apps or Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// app.options("*", cors());
 
 //i remove this due to error at server side.
 // app.use(rateLimiter);
@@ -179,8 +197,8 @@ app.use("/api/auth", authRoutes);
 // app.use("/api/data", dataRoutes);
 
 // Start the server
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`🚀 API running on http://localhost:${process.env.PORT || 3000}`);
+app.listen( PORT , HOST ,() => {
+  console.log(`🚀 API running on http://${HOST}:${PORT}`);
 });
 
 startMySQL();              // here the startMySQL function is call to connect the MySQL database
