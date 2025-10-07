@@ -61,7 +61,7 @@ async function startMySQL() {                      // here this function is use 
     await sequelize.authenticate();
     console.log("✅ MySQL Database connected");
     // Sync - in production prefer migrations
-    await sequelize.sync({ alter: true }); // or { force: false }
+    await sequelize.sync({ alter: false }); // or { force: false }
   } catch (err) {
     console.error("❌ Error connecting MySQL Server:", err);
     process.exit(1);

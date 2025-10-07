@@ -168,6 +168,32 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - working on smoothing the login , signup functionaliy.
 - add more pages to it like UnauthorizedPage, inside ./pages/dashboards -> admin , consumer , producer dashboards file.  add a authcheck to the page which help me check the user is currently the right user or not.
 
+## Update on code Date : 2025-10-06
+
+- create inner ui similar to login , signup or other's like in admin , consumer , producer dashboards.
+- add the functionality improvement in login,signup,forget-password or other by connecting the backend to it.
+- resolve the error at login or signup.
+- update the authController.js or auth.js for the signup functionality due to role is misplaces in backend responce.
+- now the signup or login working is to good.
+
+## Problem 05
+
+-- login logic doesn’t verify that the selected role in the URL matches the user’s actual role returned by the backend.
+
+## Solution 05 
+
+-- add a small check for the role for backend or from where the user came from like from producer login or other. if both match login else show role mismatch in this.
+
+## Update on code Date : 2025-10-07 
+
+- working on the login fault now it is working well or moving to next part which is enhancing the signup as well for this same problem.
+- resolve the forget-password connection error when we try to forget the password the role mismatch error resolved.
+- the email.js is now contain some new feature like when i forget the password it don't just give link it also view in a good way.
+- create the resetPassword.html file which help me to get a good view at when the user send the forget-password link.
+- this resetPassword.html is connected at authController.js.
+- now working move to working on ResetPasswordPage.jsx to reset working. or the application is now start via.
+- npm run dev -- --host 0.0.0.0 instead of npm run dev .
+
 ## Git Hub Branch
 
 - main

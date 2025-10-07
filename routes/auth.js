@@ -13,6 +13,7 @@ router.post(
     body("username").isLength({ min: 3 }),
     body("email").isEmail(),
     body("password").isLength({ min: 6 }),
+    body("role").notEmpty().isIn(["producer", "consumer", "admin"]),
   ],
   validate,
   authController.signup

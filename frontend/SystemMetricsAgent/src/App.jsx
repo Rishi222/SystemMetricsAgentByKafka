@@ -4,6 +4,7 @@ import RoleSelectPage from "./pages/RoleSelectPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ForgetPasswordPage from "./pages/ForgetPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage"; 
 import NotFoundPage from "./pages/NotFoundPage";
 import UnauthorizedPage from "./components/UnauthorizedPage";
 // navbar page
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forget-password" element={<ForgetPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/about" element={<AboutPage />} />
 
           {/* Protected routes by role */}

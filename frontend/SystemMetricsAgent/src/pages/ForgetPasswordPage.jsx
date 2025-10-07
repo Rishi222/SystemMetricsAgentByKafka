@@ -5,17 +5,23 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
+import { API_URL } from "../utils/api";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleForget = (e) => {
+  // get the role from the query param (like ?role=producer)
+  const location = useLocation();
+  const role = new URLSearchParams(location.search).get("role");
+
+  const handleForget = async (e) => {
     e.preventDefault();
 
-    if (email.trim() === "") {
+    if (!email) {
       setMessage("Please enter your email!");
       return;
     }
@@ -23,16 +29,32 @@ export default function ForgetPasswordPage() {
     setIsSubmitting(true);
     setMessage("");
 
-    // Mock password reset logic (you can later replace with real API call)
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${API_URL}/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email,role }),
+      });
+
+      const data = await response.json();
+      setMessage(data.message);
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error. Try again later.");
+    } finally {
       setIsSubmitting(false);
-      setMessage("Reset link has been sent to your email.");
-    }, 1500);
+    }
   };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" mt={8}>
       <Typography variant="h5">Forgot Password</Typography>
+
+      <Typography variant="h7">
+        Only for {role ? role : "unknown role"}
+      </Typography>
 
       <form onSubmit={handleForget}>
         <Box display="flex" flexDirection="column" gap={2} width={300} mt={2}>
@@ -43,7 +65,7 @@ export default function ForgetPasswordPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          
+
           <Button
             variant="contained"
             type="submit"
@@ -55,7 +77,11 @@ export default function ForgetPasswordPage() {
 
           {message && (
             <Typography
-              color={message.includes("sent") ? "success.main" : "error.main"}
+              color={
+                message.toLowerCase().includes("sent")
+                  ? "success.main"
+                  : "error.main"
+              }
             >
               {message}
             </Typography>
@@ -69,7 +95,6 @@ export default function ForgetPasswordPage() {
               </Typography>
             </Box>
           )}
-
         </Box>
       </form>
     </Box>

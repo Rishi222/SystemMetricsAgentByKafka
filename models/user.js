@@ -20,7 +20,7 @@ User.init(                              // here i define the user model with the
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
-      validate: { isEmail: true },
+      // validate: { isEmail: true },
     },
     password: { type: DataTypes.STRING, allowNull: false },
     role: {
