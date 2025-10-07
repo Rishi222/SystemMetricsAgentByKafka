@@ -7,16 +7,22 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useState } from "react";
+import { API_URL } from "../utils/api";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  // here at first the email or password is nill
   const [formData, setFormData] = useState({
     emailOrUsername: "",
     password: "",
   });
+
+  // to set up the message at function work.
   const [message, setMessage] = useState("");
   const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const navigate = useNavigate();
+  // this is use to traverse store the current role.
   const location = useLocation();
   const role = new URLSearchParams(location.search).get("role");
 
@@ -24,8 +30,9 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     // Simple validation
     if (!formData.emailOrUsername || !formData.password) {
@@ -33,47 +40,49 @@ export default function Login() {
       return;
     }
 
-    // Mock login validation
-    if (formData.password === "12345") {
-      const loggedInUser = {
-        username: formData.emailOrUsername,
-        role: role,
-        token: "mockToken123",
-      };
+    try {
+      // data form backend
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+        credentials: "include", // send cookies
+      });
 
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
-      setMessage("Login successful!");
-      setIsRedirecting(true);
+      const data = await response.json();
 
-      // Redirect after delay
-      setTimeout(() => {
-        if (role === "producer") navigate("/producer-dashboard");
-        else if (role === "consumer") navigate("/consumer-dashboard");
-        else if (role === "admin") navigate("/admin-dashboard");
-      }, 1500);
-    } else {
-      setMessage("Invalid credentials. Try again!");
+      // here i check for several condition if the responce is ok.
+      if (response.ok) {
+
+        // Check if role matches
+        if (data.user.role !== role) {
+          setMessage(
+            `Role mismatch! You tried to login as "${role}"`
+          );
+          return; // stop here — no redirect or saving
+        }
+
+        // Proceed only if role matches
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setMessage("Login successful!");
+        setIsRedirecting(true);
+
+        // here we move throught the dashboard's for the perticular user role.
+        setTimeout(() => {
+          if (data.user.role === "producer") navigate("/producer-dashboard");
+          else if (data.user.role === "consumer")
+            navigate("/consumer-dashboard");
+          else if (data.user.role === "admin") navigate("/admin-dashboard");
+        }, 1000);
+      } else {
+        setMessage(data.message || "Invalid credentials");
+      }
+    } catch (error) {
+      setMessage("Server error. Try again later.");
+      console.error(error);
     }
-
-    // // Simulate successful login
-    // const loggedInUser = {
-    //   username: "rishi",
-    //   role: role, // producer, consumer, or admin (from URL)
-    //   token: "mockToken123",
-    // };
-
-    // // Save to localStorage
-    // localStorage.setItem("user", JSON.stringify(loggedInUser));
-
-    // // set message to user
-    // setMessage("Login submitted successfully!");
-
-    // // redirect user based on role
-    // setTimeout(() => {
-    //   if (role === "producer") navigate("/producer-dashboard");
-    //   else if (role === "consumer") navigate("/consumer-dashboard");
-    //   else if (role === "admin") navigate("/admin-dashboard");
-    // }, 1000);
   };
 
   return (
@@ -83,7 +92,6 @@ export default function Login() {
 
         <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column" gap={2} width={300} mt={2}>
-            {/* <TextField label=" Username" required /> */}
             <TextField
               label="Email or Username"
               name="emailOrUsername"
@@ -107,7 +115,9 @@ export default function Login() {
             {message && (
               <Typography
                 color={
-                  message.includes("successful") ? "success.main" : "error.main"
+                  message.toLowerCase().includes("successful")
+                    ? "success.main"
+                    : "error.main"
                 }
               >
                 {message}
@@ -122,7 +132,6 @@ export default function Login() {
                 </Typography>
               </Box>
             )}
-            {/* {message && <Typography color="success.main">{message}</Typography>} */}
           </Box>
         </form>
 
@@ -137,7 +146,7 @@ export default function Login() {
           </Typography>
           <Typography
             component={Link}
-            to="/forget-password"
+            to={`/forget-password?role=${role}`}
             sx={{ textDecoration: "none", color: "primary.main" }}
           >
             Forget Password?

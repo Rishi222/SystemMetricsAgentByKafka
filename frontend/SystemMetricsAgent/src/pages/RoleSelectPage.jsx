@@ -6,39 +6,38 @@ export default function RoleSelectPage() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMessage("Login submitted successfully!");
+  const handleRoleSelect = (role) => {
+    // Navigate to login page and pass role in query string
+    navigate(`/login?role=${role}`);
+    setMessage(`Login submitted successfully as ${role}`);
   };
 
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center" mt={8}>
         <Typography variant="h5">Choose Role ?</Typography>
-        <form onSubmit={handleSubmit}>
           <Box display="flex" flexDirection="column" gap={2} width={300} mt={2}>
             <Button
-              onClick={() => navigate("/login?role=producer")}
+              onClick={() => handleRoleSelect("producer")}
               variant="contained"
             >
               Producer
             </Button>
             <Button
-              onClick={() => navigate("/login?role=consumer")}
+              onClick={() => handleRoleSelect("consumer")}
               variant="contained"
             >
               Consumer
             </Button>
             <Button
-              onClick={() => navigate("/login?role=admin")}
+              onClick={() => handleRoleSelect("admin")}
               variant="contained"
             >
               Admin
             </Button>
           </Box>
-        </form>
-        {message && 
-          (<Typography variant="body1" color="green" mt={2}>
+        {message && (
+          <Typography variant="body1" color="green" mt={2}>
             {message}
           </Typography>
         )}

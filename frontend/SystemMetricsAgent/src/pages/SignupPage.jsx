@@ -11,18 +11,24 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_URL } from "../utils/api";
 
 export default function SignupPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // here we get the role from the login frontend
   const roleFromURL =
     new URLSearchParams(location.search).get("role") || "producer";
 
+  // we set roles here
   const [role, setRole] = useState(roleFromURL);
+  // we set message here 
   const [message, setMessage] = useState("");
+  // we move to other page
   const [isRedirecting, setIsRedirecting] = useState(false);
 
+  // here al first the value or main field are nill
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -33,32 +39,53 @@ export default function SignupPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // here i handle the submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
-    if (formData.username && formData.email && formData.password) {
-      // mock signup success logic
-      const newUser = {
-        username: formData.username,
-        email: formData.email,
-        role: role,
-        token: "signupMockToken123", // mock token
-      };
-
-      // Save user data to localStorage (like in login)
-      localStorage.setItem("user", JSON.stringify(newUser));
-
-      setMessage("Signup successful!");
-      setIsRedirecting(true);
-
-      // Redirect after short delay
-      setTimeout(() => {
-        if (role === "producer") navigate("/producer-dashboard");
-        else if (role === "consumer") navigate("/consumer-dashboard");
-        else if (role === "admin") navigate("/admin-dashboard");
-      }, 1500);
-    } else {
+    // if any of thing is not present
+    if (!formData.username || !formData.email || !formData.password) {
       setMessage("Please fill all fields!");
+      return;
+    }
+
+    try {
+      // connect to the backend api
+      const response = await fetch(`${API_URL}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // add the missing role 
+        body: JSON.stringify({ ...formData ,role}),
+        credentials: "include",
+      });
+
+      const data = await response.json();
+      
+      // if the response is ok so it check for multiple condition's
+      if (response.ok) {
+        // store in localstorage for page process 
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // show message to frontend
+        setMessage("Signup successful!");
+        setIsRedirecting(true);
+        
+        // here we move to the perticular dashboard
+        setTimeout(() => {
+          if (data.user.role === "producer") navigate("/producer-dashboard");
+          else if (data.user.role === "consumer")
+            navigate("/consumer-dashboard");
+          else if (data.user.role === "admin") navigate("/admin-dashboard");
+        }, 1500);
+      } else {
+        setMessage(data.message || "Signup failed!");
+      }
+    } catch (error) {     
+      console.error(error);
+      setMessage("Server error. Try again later.");
     }
   };
 
