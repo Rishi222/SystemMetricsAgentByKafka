@@ -3,8 +3,8 @@ const router = express.Router();
 
 // Import controller functions
 const { body } = require("express-validator");
-const authController = require("../controllers/authController");
 const { validate } = require("../middlewares/validators");
+const authController = require("../controllers/authController");
 
 // Define routes for authentication
 router.post(
