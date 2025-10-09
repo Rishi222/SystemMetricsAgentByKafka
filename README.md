@@ -211,6 +211,7 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - then after that start working on the Branch again.
 - the LoginBranch Code is merge to main branch now moving to work on dashboard but before that first clean the /api/auth or authController.js code 
 - after that move to update the diagram with current work flow.
+- create a new branch for dashboard clean up or authController.js file code. Name of the branch is CleanAuthBranch.
 
 ## Git Hub Branch
 
@@ -220,6 +221,7 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 - ServerBranch : the work of this branch is to add server support which help to connect the service through web services
 - IPfinderBranch : the work of this branch is to find the public ip address of system using third party api and store them to mongo db + the consumer info who logged in or work as a consumer in site
 - LoginBranch : the work of this branch is to add the login and register etc functionality using jwt token and bcrypt for password hashing. this branch is use to build the authentication system. via SQL database.
+- CleanAuthBranch : this branch is to clean or maintain clear code at backend side. or clear frontend as well.
 
 ## Dependencies
 
