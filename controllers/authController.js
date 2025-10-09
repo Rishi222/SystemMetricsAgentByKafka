@@ -20,27 +20,30 @@ function signToken(user) {
   });
 }
 
-// Checked and verified
+// checked,clear and verified.
 exports.signup = async (req, res) => {
   // signup function to create a new user
   const { username, email, password, role } = req.body;
 
   try {
-    // ✅ Check if user exists by email OR username
+    // Check if user exists by email OR username
     const existing = await User.findOne({
       where: {
         [Op.or]: [{ email }, { username }],
       },
     });
-    if (existing)
-      return res
-        .status(400)
-        .json({ message: "Username or email already taken" });
 
-    // ✅ Create new user
+    // if the user is exist.
+    if (existing)
+      return res.status(400).json({
+        success: false,
+        message: "Username or email already taken",
+      });
+
+    // Create new user
     const user = await User.create({ username, email, password, role });
 
-    // ✅ Generate token and set cookie
+    // Generate token and set cookie
     const token = signToken(user);
     res.cookie(process.env.COOKIE_NAME || "token", token, cookieOptions);
 
@@ -59,75 +62,103 @@ exports.signup = async (req, res) => {
   }
 };
 
-// Checked and verified
+// checked, clear and verified
 exports.login = async (req, res) => {
   // login function to authenticate the user
   const { emailOrUsername, password } = req.body;
+
+  // if email or password is missing.
   if (!emailOrUsername || !password)
-    return res.status(400).json({ message: "Missing fields" });
+    return res
+      .status(400)
+      .json({
+        success: false,
+        message: "Email/Username and password are required",
+      });
   try {
     const user = await User.findOne({
-      // ✅ here i find the user by email or username
+      // here i find the user by email or username
       where: {
         [Op.or]: [{ email: emailOrUsername }, { username: emailOrUsername }],
       },
     });
-    if (!user) return res.status(401).json({ message: "Invalid credentials" }); // if user not found return invalid credentials
+    if (!user)
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" }); // if user not found return invalid credentials
 
-    // ✅ Check password
+    // Check password
     const isValid = await user.isValidPassword(password);
     if (!isValid)
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
 
-    // ✅ Generate token and set cookie
+    // Generate token and set cookie
     const token = signToken(user);
     res.cookie(process.env.COOKIE_NAME || "token", token, cookieOptions);
-    res.json({
+
+    // Prepare user data without sensitive info
+    const userData = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    };
+
+    res.status(200).json({
+      success: true,
       message: "Login successful",
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      },
+      user: userData,
     });
   } catch (err) {
     // ✅ here i handle the error if any error occurs during the process
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false , message: "Server error" });
   }
 };
 
-// Checked and verified
+// checked,clear and verified
 exports.logout = async (req, res) => {
-  // logout function to clear the cookie
+  try{
+    // logout function to clear the cookie
   res.clearCookie(process.env.COOKIE_NAME || "token", {
     httpOnly: true,
     secure: process.env.COOKIE_SECURE === "true",
   });
-  res.json({ message: "Logged out" });
+  res.status(200).json({ success: true, message: "Logged out Successfully" });
+  }catch(err){      // here the error handling.
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed",
+    });
+  }
 };
 
-// Checked and verified
+// checked,clear and verified
 exports.forgotPassword = async (req, res) => {
   const { email, role } = req.body;
 
+  // if any one is missing.
   if (!email || !role)
-    return res.status(400).json({ message: "Email and role are required." });
+    return res.status(400).json({ success:false, message: "Email and role are required." });
 
   try {
-    // find user by email
-    const user = await User.findOne({ where: { email, role } }); // this is not change so focus here
-    if (!user)
-      return res
-        .status(404)
-        .json({
-          message: `No account found with email '${email}' and role '${role}'.`,
-        }); // avoid email enumeration
+    // find user by email in db.
+    const user = await User.findOne({ where: { email, role } });
 
-    // check for role mismatch
+    // if the user is not in db.
+    if (!user)
+      return res.status(404).json({
+        success:false,
+        message: `No account found with email '${email}' and role '${role}'.`,
+      }); // avoid email enumeration
+
+    // check for role mismatch.
     if (user.role !== role) {
       return res.status(403).json({
+        success:false,
         message: `Role mismatch! You tried to reset password for '${role}', but this account belongs to '${user.role}'.`,
       });
     }
@@ -136,52 +167,53 @@ exports.forgotPassword = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex"); // generate a random token
     const hashed = crypto.createHash("sha256").update(token).digest("hex"); // hash the token
 
-    // save token and expiry to user
+    // save token and expiry to user in db.
     user.resetPasswordToken = hashed;
     user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
-    await user.save(); // save the user
+    await user.save(); // save the user token and expiry to db.
 
-    // send email
+    // send this which is in URL format.
     const resetUrl = `${process.env.APP_URL_CONFIG_IP}/reset-password?token=${token}&id=${user.id}`; // reset url with token and user id
-    // const message = `You requested a password reset. Click link: ${resetUrl}. If you didn't request, ignore.`; // email message
 
     // here this part is use to send email by send
     await sendEmail({
-      // send email with the help of sendEmail function
       to: user.email,
       subject: "Password Reset",
-      // text: message,
       template: "resetPassword.html",
       variables: {
         USERNAME: user.username,
         RESET_LINK: resetUrl,
       },
     });
-    res.json({
+
+    res.status(200).json({
+      success: true,
       message:
-        "reset password email sent successfully. Please check your mail...",
+        "If the email exists in our system, a password reset link has been sent...",
     });
   } catch (err) {
     // handle error if any error occurs during the process
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error during password reset" });
   }
 };
 
-// Checked and verified
+// checked,clear and verified
 exports.resetPassword = async (req, res) => {
   // reset password function to reset the user password
   const { token, id, newPassword } = req.body;
 
-  // console.log(req.body);
-  if (!token || !id || !newPassword)
-    return res.status(400).json({ message: "Missing parameters" });
+  if (!token || !id || !newPassword){
+    return res.status(400).json({ success:false, message: "Missing required parameters" });
+  }
 
   try {
     // Hash the token to compare
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    // Find user with valid token and expiry
+    // Find user with valid token and expiry in db.
     const user = await User.findOne({
       where: {
         id,
@@ -190,17 +222,17 @@ exports.resetPassword = async (req, res) => {
       },
     });
 
-    console.log(user);
-
+    // if there is no user in match.
     if (!user)
-      return res.status(400).json({ message: "Invalid or expired token" });
+      return res.status(400).json({ success:false,  message: "Invalid or expired token" });
 
-    // ✅ Use set to trigger hooks
+    // Use set to trigger hooks
     user.set({
       password: newPassword,
-      resetPasswordToken:null,
+      resetPasswordToken: null,
       resetPasswordExpires: null,
     });
+    // save the data in db.
     await user.save();
 
     // Optionally send confirmation email
@@ -222,17 +254,18 @@ exports.resetPassword = async (req, res) => {
       httpOnly: true,
       secure: process.env.COOKIE_SECURE === "true", // set true if HTTPS
       sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,    // 1 day
     });
 
     // Return success + user info
     return res.status(200).json({
+      success:true ,
       message: "Password reset successful",
       user: { id: user.id, email: user.email, role: user.role },
       token: tokenJWT,
     });
   } catch (err) {
     console.error("Reset Password Error:", err);
-    res.status(500).json({ message: "Server error while resetting password" });
+    res.status(500).json({ success:false, message: "Server error while resetting password" });
   }
 };
