@@ -209,7 +209,8 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 
 - so today the main task is to pull all the code to main from LoginBranch.
 - then after that start working on the Branch again.
-
+- the LoginBranch Code is merge to main branch now moving to work on dashboard but before that first clean the /api/auth or authController.js code 
+- after that move to update the diagram with current work flow.
 
 ## Git Hub Branch
 
