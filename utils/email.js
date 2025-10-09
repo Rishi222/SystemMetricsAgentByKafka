@@ -64,8 +64,7 @@ module.exports = async function sendEmail({
       text: text || html.replace(/<[^>]+>/g, ""), // fallback plain text
       html,
     });
-
-    console.log(`✅ Email sent to ${to}: ${info.messageId}`);
+    // console.log(`✅ Email sent to ${to}: ${info.messageId}`);
   } catch (err) {
     console.error("❌ Email error:", err);
   }
