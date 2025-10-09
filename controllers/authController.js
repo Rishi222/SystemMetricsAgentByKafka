@@ -82,10 +82,12 @@ exports.login = async (req, res) => {
         [Op.or]: [{ email: emailOrUsername }, { username: emailOrUsername }],
       },
     });
+    
+    // if there is no user in db.
     if (!user)
       return res
         .status(401)
-        .json({ success: false, message: "Invalid credentials" }); // if user not found return invalid credentials
+        .json({ success: false, message: "There is no user in Database. Please create your account first" }); // if user not found return invalid credentials
 
     // Check password
     const isValid = await user.isValidPassword(password);
