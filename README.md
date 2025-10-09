@@ -205,6 +205,12 @@ Build a system metrics agent with kafka for real time system dashboard viewer.
 
 -- the main bug found at backend code where the /reset-password is situated when i store the hash token or password in the database.
 
+## Update on code Date : 2025-10-09
+
+- so today the main task is to pull all the code to main from LoginBranch.
+- then after that start working on the Branch again.
+
+
 ## Git Hub Branch
 
 - main
